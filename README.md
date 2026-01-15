@@ -1,4 +1,4 @@
-# Django Inventory Control
+# Django - Controle de estoque
 
 🚧 Projeto em desenvolvimento
 
