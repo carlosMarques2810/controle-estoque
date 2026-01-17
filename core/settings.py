@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'usuarios',
     'estoque',
     'relatorio',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -86,6 +87,14 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+ 
+if config("DB_TESTE"):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -106,6 +115,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'usuarios.Usuario'
+
+AUTHENTICATION_BACKENDS = [
+    'usuarios.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',  # opcional
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
@@ -123,3 +139,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}

@@ -1,5 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+Usuario = get_user_model()
 
 # relatorio
 class Relatorio(models.Model):
@@ -8,7 +10,7 @@ class Relatorio(models.Model):
         PRODUTOS = "produtos", "Protutos"
         FORNECEDOR = "fornecedor", "Fornecedor"
 
-    usuario = models.ForeignKey(User, related_name="relatorios", on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, related_name="relatorios", on_delete=models.CASCADE)
     tipo_relatorio = models.CharField(max_length=20, choices=TipoRelatorio.choices)
     data_gerecao = models.DateTimeField(auto_now_add=True)
 

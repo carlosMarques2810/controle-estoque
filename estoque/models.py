@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # fornecedor
 class Fornecedor(models.Model):
@@ -14,10 +15,11 @@ class Fornecedor(models.Model):
         return self.nome_fantasia
     
     class Meta:
-        db_table = "fornecedor"
+        db_table = "fornecedores"
 
 # produto
 class Produto(models.Model):
+    gerente = models.ForeignKey(settings.AUTH_USER_MODEL, limit_choices_to={"is_gerente": True}, on_delete=models.PROTECT)
     nome = models.CharField(max_length=100)
     codigo = models.CharField(max_length=50)
     categoria = models.CharField(max_length=50)
@@ -31,4 +33,4 @@ class Produto(models.Model):
         return self.nome
     
     class Meta:
-        db_table = "produto"
+        db_table = "produtos"
