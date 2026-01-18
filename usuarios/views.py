@@ -9,7 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import Login, Configuracao, Recuperacao
 from django.contrib.auth import get_user_model
 from .serializer import UsuarioSerializer, LoginSerilaizer, ConfiguracaoSerializer, LogsAcessoSerializer, RecuperacaoSerializer
-from .permission import ApenasGerente
+from .permission import ApenasSuperuser
 
 Usuario = get_user_model()
 
@@ -21,25 +21,22 @@ class UsuarioViewSet(ModelViewSet):
         if not user.is_authenticated:
             return Usuario.objects.none()
 
-        if user.is_gerente:
-            return Usuario.objects.filter(Q(id=user.id) | Q(gerente=user))
+        if user.is_superuser:
+            return Usuario.objects.all()
 
         return Usuario.objects.filter(id=user.id)
     
     def get_permissions(self):
         if not self.action in ["create"]:
-            return [IsAuthenticated(), ApenasGerente()]
+            return [IsAuthenticated(), ApenasSuperuser()]
         
         return [AllowAny()]
     
     def perform_create(self, serializer):
         user = self.request.user
 
-        if not user.is_authenticated:
-           return serializer.save(is_gerente=True)
-        
-        if user.is_gerente:
-            return serializer.save(gerente=user)
+        if user.is_superuser:
+           return serializer.save()
 
         raise PermissionDenied({"detail": "Acesso negado"})
     

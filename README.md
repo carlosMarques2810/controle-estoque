@@ -95,6 +95,9 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate   
 ```
+> SUPERUSER - primeiro migrate
+> EMAIL: **test@email.com**
+> SENHA: **test1234**
 
 ### 5. Inicie o servidor
 ```bash
@@ -135,9 +138,8 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Não autenticado** → cria um novo usuário **gerente**
-- **Autenticado e gerente** → cria um usuário **gerenciado por ele**
-- **Autenticado e não gerente** → acesso negado
+- **Autenticado e superuser** → cria um usuário
+- **Não autenticado ou Autentucado e não Superuser** → acesso negado
 
 📌 Regra aplicada no método `perform_create`.
 
@@ -148,7 +150,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Gerente** → lista somente os usuários gerenciados por ele
+- **Superuser** → lista todos os usuários
 - **Usuário comum** → retorna apenas ele mesmo
 
 📌 Controlado no método `get_queryset`.
@@ -160,7 +162,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Gerente** → pode acessar usuários que ele gerencia
+- **Superuser** → pode acessar usuários
 - **Usuário comum** → pode acessar apenas seus próprios dados
 
 📌 Controlado por permissões personalizadas (`has_object_permission`).
@@ -172,7 +174,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Gerente** → pode atualizar usuários gerenciados por ele
+- **Superuser** → pode atualizar usuários
 - **Usuário comum** → pode atualizar apenas seus próprios dados
 
 📌 Controlado por permissões personalizadas.
@@ -184,8 +186,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Gerente** → pode remover usuários que ele gerencia
-- **Usuário comum** → pode remover apenas sua própria conta
+- **Apenas Superuser** → pode remover usuários
 
 📌 Controlado por permissões personalizadas.
 
@@ -196,7 +197,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Apenas gerente**
+- **Apenas Superuser**
 - Retorna o histórico de acessos do usuário
 
 📌 Rota criada com `@action(detail=True)`.
@@ -209,7 +210,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Gerente** → pode visualizar e alterar as configurações de qualquer usuário
+- **Superuser** → pode visualizar e alterar as configurações de qualquer usuário
 - **Usuário comum** → não possui acesso
 
 📌 A configuração é criada automaticamente via `signal (post_save)`.

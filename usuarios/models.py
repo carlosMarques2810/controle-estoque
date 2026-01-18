@@ -7,14 +7,6 @@ from django.conf import settings
 class Usuario(AbstractUser):
     username = models.CharField(max_length=255, unique=True, validators=[MinLengthValidator(5)])
     email = models.EmailField(max_length=225, unique=True)
-    is_gerente = models.BooleanField(default=False)
-    gerente = models.ForeignKey(
-        "self", 
-        limit_choices_to={"is_gerente": True}, 
-        null=True, blank=True, 
-        related_name="grenciados", 
-        on_delete=models.SET_NULL
-    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

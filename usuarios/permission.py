@@ -1,9 +1,9 @@
 from rest_framework.permissions import BasePermission
 
-class ApenasGerente(BasePermission):
+class ApenasSuperuser(BasePermission):
     """
     Regras:
-    - Gerente:
+    - Superuser:
         - Pode ver e alterar usuários que ele gerencia
         - Pode acessar configuracao e logins
     - Usuário comum:
@@ -23,11 +23,11 @@ class ApenasGerente(BasePermission):
         user = request.user
         action = view.action
 
-        if action in ["configuracao", "logins"]:
-            return user.is_gerente
+        if action in ["configuracao", "logins", "destroy"]:
+            return user.is_superuser
 
-        if action in ["retrieve", "update", "partial_update", "destroy"]:
-            if user.is_gerente and obj.gerente == user:
+        if action in ["retrieve", "update", "partial_update"]:
+            if user.is_superuser:
                 return True
 
             return obj.id == user.id

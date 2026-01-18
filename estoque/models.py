@@ -19,7 +19,6 @@ class Fornecedor(models.Model):
 
 # produto
 class Produto(models.Model):
-    gerente = models.ForeignKey(settings.AUTH_USER_MODEL, limit_choices_to={"is_gerente": True}, on_delete=models.PROTECT)
     nome = models.CharField(max_length=100)
     codigo = models.CharField(max_length=50)
     categoria = models.CharField(max_length=50)

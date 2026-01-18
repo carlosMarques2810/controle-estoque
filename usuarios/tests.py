@@ -7,69 +7,64 @@ Usuario = get_user_model()
 
 class UsuarioTest(APITestCase):
     def setUp(self):
-        self.gerente_dados = {
-            'nome_do_usuario': "gerente.nome",
-            'email': "gerente@email.com",
-            'senha': "gerente123",
-            'confirmar_senha': "gerente123"
+        self.user1_dados = {
+            'nome_do_usuario': "user1.nome",
+            'email': "user1@email.com",
+            'senha': "user1123",
+            'confirmar_senha': "user1123"
         }
 
-        self.gerido_dados = {
-            'nome_do_usuario': "gereido.nome",
-            'email': "gereido@email.com",
-            'senha': "gereido123",
-            'confirmar_senha': "gereido123"
+        self.user2_dados = {
+            'nome_do_usuario': "user2.nome",
+            'email': "user2@email.com",
+            'senha': "user2123",
+            'confirmar_senha': "user2123"
         }
 
     def test_regra_de_registro(self):
-        # Registro dos gerentes acontece com os que não estão autenticados
         url = reverse("usuario-list")
-        response = self.client.post(url, self.gerente_dados, format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # verificando se o superuser foi criado
         self.assertEqual(Usuario.objects.count(), 1)
-        self.assertEqual(Usuario.objects.first().is_gerente, True)
-        self.assertEqual(Usuario.objects.first().gerente, None)
+        self.assertEqual(Usuario.objects.first().is_superuser, True)
 
-        # Grentes desgnando seu geridos
+        # criação de usuario pelo superuser
         self.client.force_authenticate(user=Usuario.objects.first())
-        response = self.client.post(url, self.gerido_dados, format="json")
+        response = self.client.post(url, self.user1_dados, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Usuario.objects.count(), 2)
-        self.assertEqual(Usuario.objects.filter(id=response.data['id']).first().is_gerente, False)
-        self.assertEqual(Usuario.objects.filter(id=2).first().gerente, Usuario.objects.first())
 
-    def test_apenas_gerente_define_acoes_no_estoque(self):
-        url = reverse("usuario-list")
-        response = self.client.post(url, self.gerente_dados, format="json")
+        # criação de usuario por outro comun
+        self.client.force_authenticate(user=Usuario.objects.last())
+        response = self.client.post(url, self.user2_dados, format="json")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_apenas_superuser_define_acoes_no_estoque(self):
+        user1 = Usuario.objects.create_user(username="user1.username", email="user1@email.com", password="user1234")
         gerente = Usuario.objects.first()
         self.client.force_authenticate(user=gerente)
-        response = self.client.post(url, self.gerido_dados, format="json")
-        gerido = Usuario.objects.last()
 
-        # Verificado se o gerente pode alterar as permissiões dos seus geridos
-        url = f"/api/usuarios/{gerido.id}/configuracao/"
+        # Verificado se o superuser pode alterar as permissiões dos seus geridos
+        url = f"/api/usuarios/{user1.id}/configuracao/"
         response = self.client.patch(url, {'pode_adicionar_produto': True}, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # verificando se o gerente pode mudar as suas proprias permissões
+        # verificando se o superuser pode mudar as suas proprias permissões
         url = f"/api/usuarios/{gerente.id}/configuracao/"
         response = self.client.patch(url, {'pode_adicionar_produto': False}, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # verificando se o gerido pode alterar as suas proprias permissões
-        self.client.force_authenticate(user=gerido)
-        url = f"/api/usuarios/{gerido.id}/configuracao/"
+        # verificando se o usuario pode alterar as suas proprias permissões
+        self.client.force_authenticate(user=user1)
+        url = f"/api/usuarios/{user1.id}/configuracao/"
         response = self.client.patch(url, {'pode_adicionar_produto': True}, format="json")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(response.data["detail"], "Você não tem permissão para executar essa ação.")
 
     def test_login_e_refresh_token(self):
-        # usuario do teste de login
-        url = reverse("usuario-list")
-        self.client.post(url, self.gerente_dados, format="json")
-        Usuario.objects.first()
-    
+        from decouple import config
         # verifica o login
-        response = self.client.post("/api/auth/login", {"email": self.gerente_dados['email'], "password": self.gerente_dados['senha']}, format="json")
+        response = self.client.post("/api/auth/login", {"email": config("SUPERUSER_EMAIL"), "password": config("SUPERUSER_PASSWORD")}, format="json")
         self.assertIn("access", response.data)
         self.assertIn("refresh", response.data)
         self.assertIsNotNone(response.data["access"])
