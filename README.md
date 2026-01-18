@@ -67,7 +67,20 @@ Caso o desenvolvedor deseje utilizar PostgreSQL, será necessário ajustar as va
 ## 🔐 Configurações
 As variáveis de ambiente são gerenciadas via `.env` (não versionado).
 
+### ⚙️ Variáveis de Ambiente (.env)
+
+Para executar o projeto em **ambiente de desenvolvimento/testes**, é necessário criar um arquivo `.env` na **raiz do projeto**.
+
+Esse arquivo define algumas configurações importantes, como modo de debug e o banco de dados utilizado durante os testes.
+
+### 📄 Exemplo de arquivo `.env`
+
+```env
+DEBUG=True
+DB_TESTE=True
+```
 ---
+
 ## 🚀 Instalação e rodar localmente.
 
 > Requisitos: Python 3.10+ e pip
