@@ -98,8 +98,8 @@ python manage.py migrate
 
 ```
 > SUPERUSER - primeiro migrate
-> EMAIL: **test@email.com**
-> SENHA: **test1234**
+> EMAIL: test@email.com
+> SENHA: test1234
 ```
 
 ### 5. Inicie o servidor
