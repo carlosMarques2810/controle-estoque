@@ -276,7 +276,7 @@ Essa interface é especialmente útil para:
 
 ## 🛡️ Observações de segurança
 
-- Todas as rotas (**exceto criação de usuário e login**) exigem autenticação **JWT**
+- Todas as rotas exigem autenticação **JWT**
 - O controle de acesso é feito por:
   - get_queryset
   - perform_create
