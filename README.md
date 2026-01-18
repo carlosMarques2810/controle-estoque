@@ -96,8 +96,9 @@ python manage.py makemigrations
 python manage.py migrate   
 ```
 
+#### 4.1. Usuário Root (Pós migrações)
 ```
-> SUPERUSER - primeiro migrate
+> SUPERUSER - todas as permissões 
 > EMAIL: test@email.com
 > SENHA: test1234
 ```
