@@ -95,9 +95,12 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate   
 ```
+
+```
 > SUPERUSER - primeiro migrate
 > EMAIL: **test@email.com**
 > SENHA: **test1234**
+```
 
 ### 5. Inicie o servidor
 ```bash
