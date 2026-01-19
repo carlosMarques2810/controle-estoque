@@ -5,7 +5,7 @@ class UsuarioTemPermissao(BasePermission):
     Controla permissões de acesso a usuários e configurações.
 
     - Usuário comum:
-        • Pode ver apenas seus próprios dados
+        • Pode ver apenas seus próprios dados e atualizalos
         • Pode ver sua própria configuração
     - Usuário com permissões administrativas:
         • Pode gerenciar usuários
@@ -15,19 +15,31 @@ class UsuarioTemPermissao(BasePermission):
 
     def has_permission(self, request, view):
         user = request.user
-        if view.action in ["create", "update", "partial_update", "destroy"]:
+        if view.action in ["create", "destroy"]:
             return user.configuracao.permissao_total or user.configuracao.acesso_configuracao_sistema
         
         return True
 
     def has_object_permission(self, request, view, obj):
-        user = request.user
-        action = view.action
+            user = request.user
+            action = view.action
+            method = request.method
 
-        if action in ["configuracao", "retrieve"] and request.method == "GET":
-            return user.id == obj.id or user.configuracao.permissao_total or user.configuracao.acesso_configuracao_sistema
+            if action == "configuracao":
+                if method == "GET":
+                    return user.id == obj.id or user.configuracao.permissao_total or user.configuracao.acesso_configuracao_sistema
 
-        if request.method in ["PUT", "PATCH", "DELETE"]:
-            return user.configuracao.permissao_total or user.configuracao.acesso_configuracao_sistema
+                # PUT / PATCH → SOMENTE ADMIN
+                if method in ["PUT", "PATCH"]:
+                    return user.configuracao.permissao_total or user.configuracao.acesso_configuracao_sistema
 
-        return False
+                return False  # bloqueia qualquer outro verbo
+
+            # 🔹 DADOS DO USUÁRIO
+            if action in ["retrieve", "update", "partial_update"]:
+                return user.id == obj.id or user.configuracao.permissao_total or user.configuracao.acesso_configuracao_sistema
+            
+            if method == "DELETE":
+                return user.configuracao.permissao_total or user.configuracao.acesso_configuracao_sistema
+
+            return False
