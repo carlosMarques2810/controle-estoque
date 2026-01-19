@@ -165,9 +165,9 @@ Essa interface é especialmente útil para:
 #### Entrada
 ```json
 {
-  "name": "Carlos Silva",
+  "nome": "Carlos Silva",
   "email": "carlos@email.com",
-  "password": "senha123",
+  "senha": "senha123",
   "confirmacao_senha": "senha123"
 }
 ```
@@ -176,7 +176,7 @@ Essa interface é especialmente útil para:
 ```json
 {
   "id": 1,
-  "name": "Carlos Silva",
+  "nome": "Carlos Silva",
   "email": "carlos@email.com"
 }
 ```
