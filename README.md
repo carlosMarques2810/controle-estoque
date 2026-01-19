@@ -306,7 +306,7 @@ Essa interface é especialmente útil para:
 ### ▶ Configuração do usuário
 **GET** `/api/usuarios/{id}/configuracao/`  
 
-### Entrada
+### Saída 
 ```json
 {
   "usuario": 1,
