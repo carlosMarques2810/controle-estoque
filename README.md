@@ -198,7 +198,7 @@ Essa interface é especialmente útil para:
 #### Comportamento
 
 - **Superusuário** → pode atualizar usuários
-- **Usuário comum** → acesso negado
+- **Usuário comum** → atuliza os próprios dados
 
 📌 Controlado por permissões personalizadas.
 
