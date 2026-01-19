@@ -285,11 +285,11 @@ Essa interface é especialmente útil para:
 [
   {
     "id": 1,
-    "login_date": "2026-0115T14:32:10Z"
+    "login_data": "2026-0115T14:32:10Z"
   },
   {
     "id": 2,
-    "login_date": "2026-0117T09:08:44Z"
+    "login_data": "2026-0117T09:08:44Z"
   }
 ]
 ```
