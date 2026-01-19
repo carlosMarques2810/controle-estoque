@@ -162,7 +162,7 @@ Essa interface é especialmente útil para:
 ### ▶ Criar usuário
 **POST** `/api/usuarios/`
 
-#### Entrada
+### Entrada
 ```json
 {
   "nome": "Carlos Silva",
@@ -191,6 +191,22 @@ Essa interface é especialmente útil para:
 ### ▶ Listar usuários
 **GET** `/api/usuarios/`
 
+### Saída
+```json
+[
+  {
+    "id": 1,
+    "name": "Carlos Silva",
+    "email": "carlos@email.com"
+  },
+  {
+    "id": 2,
+    "name": "Maria Souza",
+    "email": "maria@email.com"
+  }
+]
+```
+
 #### Comportamento
 - **Superusuário** → lista todos os usuários
 - **Usuário comum** → retorna apenas ele mesmo
@@ -201,6 +217,15 @@ Essa interface é especialmente útil para:
 
 ### ▶ Detalhar usuário
 **GET** `/api/usuarios/{id}/`
+
+### Saída
+```json
+{
+  "id": 1,
+  "name": "Carlos Silva",
+  "email": "carlos@email.com"
+}
+```
 
 #### Comportamento
 
@@ -213,6 +238,23 @@ Essa interface é especialmente útil para:
 
 ### ▶ Atualizar usuário
 **PUT / PATCH** `/api/usuarios/{id}/`
+
+### Entrada
+```json
+{
+  "name": "Carlos Silva",
+  "email": "carlos@email.com"
+}
+```
+
+### Saída
+```json
+{
+  "id": 1,
+  "name": "Carlos Silva",
+  "email": "carlos@email.com"
+}
+```
 
 #### Comportamento
 
