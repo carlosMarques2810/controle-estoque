@@ -162,6 +162,25 @@ Essa interface é especialmente útil para:
 ### ▶ Criar usuário
 **POST** `/api/usuarios/`
 
+#### Entrada
+```json
+{
+  "name": "Carlos Silva",
+  "email": "carlos@email.com",
+  "password": "senha123",
+  "confirmacao_senha": "senha123"
+}
+```
+
+### Saída
+```json
+{
+  "id": 1,
+  "name": "Carlos Silva",
+  "email": "carlos@email.com"
+}
+```
+
 #### Comportamento
 
 - **Superusuário** → cria um usuário
