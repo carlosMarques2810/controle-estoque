@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
 from django.contrib.auth import get_user_model
+from .models import Login
 
 Usuario = get_user_model()
 
@@ -61,13 +62,17 @@ class UsuarioTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(response.data["detail"], "Você não tem permissão para executar essa ação.")
 
-    def test_login_e_refresh_token(self):
+    def test_login_e_logins_de_acesso_e_refresh_token(self):
         from decouple import config
         # verifica o login
         response = self.client.post("/api/auth/login", {"email": config("SUPERUSER_EMAIL"), "password": config("SUPERUSER_PASSWORD")}, format="json")
         self.assertIn("access", response.data)
         self.assertIn("refresh", response.data)
         self.assertIsNotNone(response.data["access"])
+
+        # verificando log de acessos
+        self.assertEqual(Login.objects.count(), 1)
+        self.assertEqual(Login.objects.filter(usuario=Usuario.objects.first()).exists(), True)
 
         #renovação do token 
         refresh = response.data['refresh']

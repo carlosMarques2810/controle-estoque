@@ -6,39 +6,27 @@ from rest_framework.exceptions import PermissionDenied
 from django.db.models import Q
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import Login, Configuracao, Recuperacao
 from django.contrib.auth import get_user_model
 from .serializer import UsuarioSerializer, LoginSerilaizer, ConfiguracaoSerializer, LogsAcessoSerializer, RecuperacaoSerializer
-from .permission import ApenasSuperuser
+from .permission import UsuarioTemPermissao
 
 Usuario = get_user_model()
 
 class UsuarioViewSet(ModelViewSet):
     serializer_class = UsuarioSerializer
+    permission_classes = [IsAuthenticated, UsuarioTemPermissao]
+
     def get_queryset(self):
         user = self.request.user
+        queryset = Usuario.objects.select_related("configuracao")
 
         if not user.is_authenticated:
             return Usuario.objects.none()
 
-        if user.is_superuser:
-            return Usuario.objects.all()
+        if user.configuracao.permissao_total or user.configuracao.acesso_configuracao_sistema:
+            return queryset
 
-        return Usuario.objects.filter(id=user.id)
-    
-    def get_permissions(self):
-        if not self.action in ["create"]:
-            return [IsAuthenticated(), ApenasSuperuser()]
-        
-        return [AllowAny()]
-    
-    def perform_create(self, serializer):
-        user = self.request.user
-
-        if user.is_superuser:
-           return serializer.save()
-
-        raise PermissionDenied({"detail": "Acesso negado"})
+        return queryset.filter(id=user.id)
     
     @action(detail=True, methods={'get'})
     def logins(self, request, pk=None):

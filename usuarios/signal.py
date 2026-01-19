@@ -8,10 +8,12 @@ Usuario = get_user_model()
 
 @receiver(post_migrate)
 def criar_superuser(sender, **kwargs):
+    if sender.name != "usuarios": return
+
     dados = {
-        "username": config("SUPERUSER_USERNAME"),
-        "email": config("SUPERUSER_EMAIL"),
-        "password": config("SUPERUSER_PASSWORD")
+        "username": config("SUPERUSER_USERNAME", default="userteste"),   
+        "email": config("SUPERUSER_EMAIL", default="test@email.com"),
+        "password": config("SUPERUSER_PASSWORD", default="test1234")
     }
 
     if not Usuario.objects.filter(is_superuser=True).exists():
@@ -20,20 +22,5 @@ def criar_superuser(sender, **kwargs):
 @receiver(post_save, sender=Usuario)
 def criar_configuracao_usuario(sender, instance, created, **kwargs):
     if created:
-        configuracoes = {
-            "pode_adicionar_produto": True,
-            "pode_atualizar_produto": True, 
-            "pode_excluir_produto": True, 
-            "pode_adicionar_fornecerdor": True,
-            "pode_atualizar_fornecerdor": True,
-            "pode_excluir_fornecerdor": True,
-            "acesso_relatorios": True,
-            "acesso_configuracao_sistema": True,
-            "permissao_total": True
-        }
-        
-        configuracao = Configuracao(usuario=instance)
-        if instance.is_superuser:
-            configuracao = Configuracao(usuario=instance, **configuracoes)
-
+        configuracao = Configuracao(usuario=instance, permissao_total=instance.is_superuser)
         configuracao.save()

@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mwg1^v9^w9#p(d&=79d(#p_$lh@59e+4^vxl3wca37*1s4%7hr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", cast=bool)
+DEBUG = config("DEBUG", cast=bool, default=True)
 
 ALLOWED_HOSTS = []
 
@@ -88,7 +88,7 @@ DATABASES = {
     }
 }
  
-if config("DB_TESTE"):
+if config("DB_TESTE", default=True):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

@@ -67,17 +67,25 @@ Caso o desenvolvedor deseje utilizar PostgreSQL, será necessário ajustar as va
 ## 🔐 Configurações
 As variáveis de ambiente são gerenciadas via `.env` (não versionado).
 
-### ⚙️ Variáveis de Ambiente (.env)
+### ⚙️ Configuração opcional com `.env`
 
-Para executar o projeto em **ambiente de desenvolvimento/testes**, é necessário criar um arquivo `.env` na **raiz do projeto**.
+Este projeto **não exige obrigatoriamente** a criação de um arquivo `.env` para rodar em ambiente local.
 
-Esse arquivo define algumas configurações importantes, como modo de debug e o banco de dados utilizado durante os testes.
-
-### 📄 Exemplo de arquivo `.env`
+O arquivo `.env` serve apenas para **personalizar o ambiente de testes e desenvolvimento**.  
+Caso não seja criado, o sistema utilizará **valores padrão**.
 
 ```env
-DEBUG=True
+# Ativa o banco de dados de testes (SQLite)
 DB_TESTE=True
+
+# Ativa o modo debug
+DEBUG=True
+
+# (Opcional) Credenciais do superusuário
+# Se não forem informadas, valores padrão serão utilizados
+SUPERUSER_USERNAME=userteste
+SUPERUSER_EMAIL=test@email.com
+SUPERUSER_PASSWORD=test1234
 ```
 ---
 
@@ -109,12 +117,13 @@ python manage.py makemigrations
 python manage.py migrate   
 ```
 
-#### 4.1. Usuário Root (Pós migrações)
-```
-> SUPERUSER - todas as permissões 
-> EMAIL: test@email.com
-> SENHA: test1234
-```
+#### 4.1. Usuário Root (pós migrações)
+
+> Um superusuário é criado automaticamente após as migrações.
+>
+> **SUPERUSER** — possui todas as permissões do sistema  
+> **EMAIL:** informado no `.env` (opcional) ou **valor padrão**  
+> **SENHA:** informada no `.env` (opcional) ou **valor padrão**
 
 ### 5. Inicie o servidor
 ```bash
@@ -155,10 +164,8 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Autenticado e superuser** → cria um usuário
-- **Não autenticado ou Autentucado e não Superuser** → acesso negado
-
-📌 Regra aplicada no método `perform_create`.
+- **Superusuário** → cria um usuário
+- **Usuário comun** → acesso negado
 
 ---
 
@@ -166,8 +173,7 @@ Essa interface é especialmente útil para:
 **GET** `/api/usuarios/`
 
 #### Comportamento
-
-- **Superuser** → lista todos os usuários
+- **Superusuário** → lista todos os usuários
 - **Usuário comum** → retorna apenas ele mesmo
 
 📌 Controlado no método `get_queryset`.
@@ -179,7 +185,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superuser** → pode acessar usuários
+- **Superusuário** → pode acessar usuários
 - **Usuário comum** → pode acessar apenas seus próprios dados
 
 📌 Controlado por permissões personalizadas (`has_object_permission`).
@@ -191,8 +197,8 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superuser** → pode atualizar usuários
-- **Usuário comum** → pode atualizar apenas seus próprios dados
+- **Superusuário** → pode atualizar usuários
+- **Usuário comum** → acesso negado
 
 📌 Controlado por permissões personalizadas.
 
@@ -203,7 +209,8 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Apenas Superuser** → pode remover usuários
+- **Superusuário** → pode remover usuários
+- **Usuário comum** → acesso negado
 
 📌 Controlado por permissões personalizadas.
 
@@ -214,7 +221,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Apenas Superuser**
+- **Superusuário**
 - Retorna o histórico de acessos do usuário
 
 📌 Rota criada com `@action(detail=True)`.
@@ -227,8 +234,8 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superuser** → pode visualizar e alterar as configurações de qualquer usuário
-- **Usuário comum** → não possui acesso
+- **Superusuário** → pode visualizar e alterar as configurações de qualquer usuário
+- **Usuário comum** → só pode visualizar as suas configurações
 
 📌 A configuração é criada automaticamente via `signal (post_save)`.
 
@@ -279,7 +286,6 @@ Essa interface é especialmente útil para:
 - Todas as rotas exigem autenticação **JWT**
 - O controle de acesso é feito por:
   - get_queryset
-  - perform_create
   - permissões personalizadas (BasePermission)
 - As rotas extras (**logins** e **configuracao**) são actions do ModelViewSet
 ---
