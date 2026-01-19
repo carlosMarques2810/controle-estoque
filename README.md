@@ -278,7 +278,7 @@ Essa interface é especialmente útil para:
 ---
 
 ### ▶ Histórico de logins
-**GET** `/api/usuarios/{id}/logins/`
+**GET** `/api/usuarios/{id}/logins-logs/`
 
 ### Saída
 ```json
@@ -305,7 +305,49 @@ Essa interface é especialmente útil para:
 
 ### ▶ Configuração do usuário
 **GET** `/api/usuarios/{id}/configuracao/`  
+
+### Entrada
+```json
+{
+  "usuario": 1,
+  "pode_adicionar_produto": true,
+  "pode_atualizar_produto": false,
+  "pode_excluir_produto": false,
+  "pode_adicionar_fornecedor": true,
+  "pode_atualizar_fornecedor": false,
+  "pode_excluir_fornecedor": false,
+  "acesso_relatorios": true,
+  "acesso_configuracao_sistema": false,
+  "permissao_total": false
+}
+```
+
 **PUT / PATCH** `/api/usuarios/{id}/configuracao/`
+
+### Entrada
+```json
+{
+  "pode_adicionar_produto": true,
+  "pode_excluir_produto": true,
+  "acesso_relatorios": true
+}
+```
+
+### Saída
+```json
+{
+  "usuario": 1,
+  "pode_adicionar_produto": true,
+  "pode_atualizar_produto": false,
+  "pode_excluir_produto": true,
+  "pode_adicionar_fornecedor": true,
+  "pode_atualizar_fornecedor": false,
+  "pode_excluir_fornecedor": false,
+  "acesso_relatorios": true,
+  "acesso_configuracao_sistema": false,
+  "permissao_total": false
+}
+```
 
 #### Comportamento
 
