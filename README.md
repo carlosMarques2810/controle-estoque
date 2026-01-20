@@ -369,7 +369,7 @@ Essa interface é especialmente útil para:
 ```json
 {
   "email": "usuario@email.com",
-  "password": "senha"
+  "password": "senha1234"
 }
 ```
 

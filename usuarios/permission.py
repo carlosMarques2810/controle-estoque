@@ -25,7 +25,7 @@ class UsuarioTemPermissao(BasePermission):
             action = view.action
             method = request.method
 
-            if action == "configuracao":
+            if action == "permissoes":
                 if method == "GET":
                     return user.id == obj.id or user.configuracao.permissao_total or user.configuracao.acesso_configuracao_sistema
 

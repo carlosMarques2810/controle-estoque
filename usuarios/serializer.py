@@ -40,8 +40,6 @@ class LoginSerilaizer(TokenObtainPairSerializer):
 
 # Pemissões dos usuários
 class ConfiguracaoSerializer(serializers.ModelSerializer):
-    usuario = UsuarioSerializer(read_only=True)
-    
     class Meta:
         model = Configuracao
         fields = [
@@ -66,4 +64,4 @@ class RecuperacaoSerializer(serializers.ModelSerializer):
 class LogsAcessoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Login
-        filds = ["data_login"]
+        filds = ["id", "usuario", "data_login"]

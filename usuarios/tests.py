@@ -46,18 +46,18 @@ class UsuarioTest(APITestCase):
         self.client.force_authenticate(user=gerente)
 
         # Verificado se o superuser pode alterar as permissiões dos seus geridos
-        url = f"/api/usuarios/{user1.id}/configuracao/"
+        url = f"/api/usuarios/{user1.id}/permissoes/"
         response = self.client.patch(url, {'pode_adicionar_produto': True}, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # verificando se o superuser pode mudar as suas proprias permissões
-        url = f"/api/usuarios/{gerente.id}/configuracao/"
+        url = f"/api/usuarios/{gerente.id}/permissoes/"
         response = self.client.patch(url, {'pode_adicionar_produto': False}, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # verificando se o usuario pode alterar as suas proprias permissões
         self.client.force_authenticate(user=user1)
-        url = f"/api/usuarios/{user1.id}/configuracao/"
+        url = f"/api/usuarios/{user1.id}/permissoes/"
         response = self.client.patch(url, {'pode_adicionar_produto': True}, format="json")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(response.data["detail"], "Você não tem permissão para executar essa ação.")

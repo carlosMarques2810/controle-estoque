@@ -28,14 +28,20 @@ class UsuarioViewSet(ModelViewSet):
 
         return queryset.filter(id=user.id)
     
-    @action(detail=True, methods={'get'})
-    def logins(self, request, pk=None):
+    @action(detail=True, methods={'get'}, url_name="login-logs", url_path="login-logs")
+    def login_logs(self, request, pk=None):
+        """
+        Retorna o histórico de login do usuário
+        """
         usuario = self.get_object()
         serilizer = LogsAcessoSerializer(usuario.acessos.all(), many=True)
         return Response(serilizer.data, status=status.HTTP_200_OK)
     
-    @action(detail=True, methods=['get', 'put', 'patch'])
-    def configuracao(self, request, pk=None):
+    @action(detail=True, methods=['get', 'put', 'patch'], url_name="permissoes", url_path="permissoes")
+    def permissoes(self, request, pk=None):
+        """
+        Visualiza ou atualiza permissões do usuário
+        """
         usuario = self.get_object()
         configuracao = usuario.configuracao
         

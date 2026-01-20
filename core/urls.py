@@ -25,12 +25,12 @@ urlpatterns = [
 #     PATCH
 #     DELETE
 
-# /api/usuarios/{id}/configuracao/
+# /api/usuarios/{id}/permissoes/
 #     GET
 #     PUT
 #     PATCH
 
-# /api/usuarios/{id}/logins/
+# /api/usuarios/{id}/login-logs/
 #     GET
 
 # /api/auth/login/
