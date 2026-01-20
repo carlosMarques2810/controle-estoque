@@ -165,7 +165,7 @@ Essa interface é especialmente útil para:
 ### Entrada
 ```json
 {
-  "nome": "Carlos Silva",
+  "nome_do_usuario": "Carlos Silva",
   "email": "carlos@email.com",
   "senha": "senha123",
   "confirmacao_senha": "senha123"
@@ -176,7 +176,7 @@ Essa interface é especialmente útil para:
 ```json
 {
   "id": 1,
-  "nome": "Carlos Silva",
+  "nome_do_usuario": "Carlos Silva",
   "email": "carlos@email.com"
 }
 ```
@@ -196,12 +196,12 @@ Essa interface é especialmente útil para:
 [
   {
     "id": 1,
-    "name": "Carlos Silva",
+    "nome_do_usuario": "Carlos Silva",
     "email": "carlos@email.com"
   },
   {
     "id": 2,
-    "name": "Maria Souza",
+    "nome_do_usuario": "Maria Souza",
     "email": "maria@email.com"
   }
 ]
@@ -222,7 +222,7 @@ Essa interface é especialmente útil para:
 ```json
 {
   "id": 1,
-  "name": "Carlos Silva",
+  "nome_do_usuario": "Carlos Silva",
   "email": "carlos@email.com"
 }
 ```
@@ -242,7 +242,7 @@ Essa interface é especialmente útil para:
 ### Entrada
 ```json
 {
-  "name": "Carlos Silva",
+  "nome_do_usuario": "Carlos Silva",
   "email": "carlos@email.com"
 }
 ```
@@ -251,7 +251,7 @@ Essa interface é especialmente útil para:
 ```json
 {
   "id": 1,
-  "name": "Carlos Silva",
+  "nome_do_usuario": "Carlos Silva",
   "email": "carlos@email.com"
 }
 ```
