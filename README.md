@@ -306,7 +306,7 @@ Essa interface é especialmente útil para:
 ---
 
 ### ▶ Configuração do usuário
-**GET** `/api/usuarios/{id}/configuracao/`  
+**GET** `/api/usuarios/{id}/premissoes/`  
 
 ### Saída 
 ```json
@@ -324,7 +324,7 @@ Essa interface é especialmente útil para:
 }
 ```
 
-**PUT / PATCH** `/api/usuarios/{id}/configuracao/`
+**PUT / PATCH** `/api/usuarios/{id}/permissoes/`
 
 ### Entrada
 ```json
