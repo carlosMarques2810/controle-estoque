@@ -460,4 +460,13 @@ A API segue o padrão do **Django REST Framework (DRF)**.
   ]
 }
 ```
+
+### Tratamento de erros no Front-end
+
+O front-end deve tratar erros com base no **status HTTP** retornado pela API.
+
+As mensagens retornadas no corpo da resposta (`detail`) não devem ser usadas como regra de negócio,
+servindo apenas como apoio para debug ou exibição opcional.
+
+Erros de validação (`400`) retornam mensagens por campo e podem ser utilizados para feedback ao usuário.
 ---
