@@ -285,10 +285,12 @@ Essa interface é especialmente útil para:
 [
   {
     "id": 1,
+    "usuario": 1,
     "login_data": "2026-0115T14:32:10Z"
   },
   {
     "id": 2,
+    "usuario": 1,
     "login_data": "2026-0117T09:08:44Z"
   }
 ]
