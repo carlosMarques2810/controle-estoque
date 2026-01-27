@@ -177,7 +177,8 @@ Essa interface é especialmente útil para:
 {
   "id": 1,
   "nome_do_usuario": "Carlos Silva",
-  "email": "carlos@email.com"
+  "email": "carlos@email.com",
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
@@ -197,12 +198,14 @@ Essa interface é especialmente útil para:
   {
     "id": 1,
     "nome_do_usuario": "Carlos Silva",
-    "email": "carlos@email.com"
+    "email": "carlos@email.com",
+    "criado_em": "2026-0115T14:32:10Z"
   },
   {
     "id": 2,
     "nome_do_usuario": "Maria Souza",
-    "email": "maria@email.com"
+    "email": "maria@email.com",
+    "criado_em": "2026-0115T14:32:10Z"
   }
 ]
 ```
@@ -223,7 +226,8 @@ Essa interface é especialmente útil para:
 {
   "id": 1,
   "nome_do_usuario": "Carlos Silva",
-  "email": "carlos@email.com"
+  "email": "carlos@email.com",
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
@@ -252,7 +256,8 @@ Essa interface é especialmente útil para:
 {
   "id": 1,
   "nome_do_usuario": "Carlos Silva",
-  "email": "carlos@email.com"
+  "email": "carlos@email.com",
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
@@ -452,7 +457,8 @@ Essa interface é especialmente útil para:
   "endereco": "Rua das Flores, 123",
   "municipio": "Manaus",
   "email": "contato@alfadistribuicao.com",
-  "telefone": "(92) 99999-0000"
+  "telefone": "(92) 99999-0000",
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
@@ -466,7 +472,8 @@ Essa interface é especialmente útil para:
   "endereco": "Rua das Flores, 123",
   "municipio": "Manaus",
   "email": "contato@alfadistribuicao.com",
-  "telefone": "(92) 99999-0000"
+  "telefone": "(92) 99999-0000",
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
@@ -491,7 +498,8 @@ Essa interface é especialmente útil para:
     "endereco": "Rua das Flores, 123",
     "municipio": "Manaus",
     "email": "contato@alfadistribuicao.com",
-    "telefone": "(92) 99999-0000"
+    "telefone": "(92) 99999-0000",
+    "criado_em": "2026-0115T14:32:10Z"
   },
   {
     "id": 2,
@@ -501,7 +509,8 @@ Essa interface é especialmente útil para:
     "endereco": "Rua do Comércio, 789",
     "municipio": "Rio de Janeiro",
     "email": "contato@gammalogistica.com",
-    "telefone": "(21) 97777-2222"
+    "telefone": "(21) 97777-2222",
+    "criado_em": "2026-0115T14:32:10Z"
   }
 ]
 ```
@@ -526,7 +535,8 @@ Essa interface é especialmente útil para:
   "endereco": "Rua das Flores, 123",
   "municipio": "Manaus",
   "email": "contato@alfadistribuicao.com",
-  "telefone": "(92) 99999-0000" 
+  "telefone": "(92) 99999-0000",
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 ---
@@ -581,7 +591,8 @@ Essa interface é especialmente útil para:
   "endereco": "Rua das Neves, 200",
   "municipio": "Manaus",
   "email": "contato@alfadistribuicao.com",
-  "telefone": "(92) 99999-0000" 
+  "telefone": "(92) 99999-0000",
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
@@ -619,7 +630,8 @@ Essa interface é especialmente útil para:
   "vencimento": "2026-12-31",
   "quantidade": 100,
   "valor_unitario": "7.50",
-  "fornecedor": 1
+  "fornecedor": 1,
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
@@ -634,7 +646,8 @@ Essa interface é especialmente útil para:
   "vencimento": "2026-12-31",
   "quantidade": 100,
   "valor_unitario": "7.50",
-  "fornecedor": 1
+  "fornecedor": 1,
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
@@ -659,7 +672,8 @@ Essa interface é especialmente útil para:
     "vencimento": "2026-12-31",
     "quantidade": 100,
     "valor_unitario": "7.50",
-    "fornecedor": 1
+    "fornecedor": 1,
+    "criado_em": "2026-0115T14:32:10Z"
   },
   {
     "nome": "Feijão Carioca",
@@ -669,7 +683,8 @@ Essa interface é especialmente útil para:
     "vencimento": "2026-10-15",
     "quantidade": 80,
     "valor_unitario": "8.90",
-    "fornecedor": 1
+    "fornecedor": 1,
+    "criado_em": "2026-0115T14:32:10Z"
   },
   {
     "nome": "Açúcar Refinado",
@@ -679,7 +694,8 @@ Essa interface é especialmente útil para:
     "vencimento": "2027-01-20",
     "quantidade": 120,
     "valor_unitario": "4.30",
-    "fornecedor": 2
+    "fornecedor": 2,
+    "criado_em": "2026-0115T14:32:10Z"
   }
 ]
 
@@ -706,7 +722,8 @@ Essa interface é especialmente útil para:
   "vencimento": "2026-12-31",
   "quantidade": 100,
   "valor_unitario": "7.50",
-  "fornecedor": 1
+  "fornecedor": 1,
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 ---
@@ -732,7 +749,8 @@ Essa interface é especialmente útil para:
   "vencimento": "2026-12-31",
   "quantidade": 200,
   "valor_unitario": "7.50",
-  "fornecedor": 1
+  "fornecedor": 1,
+  "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 

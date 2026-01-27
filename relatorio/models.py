@@ -18,4 +18,4 @@ class Relatorio(models.Model):
         return f"{self.get_tipo_relatorio_display()} - {self.data_gerecao:%d/%m%Y}"
     
     class Meta:
-        db_table = "relatorio"
+        db_table = "relatorios"

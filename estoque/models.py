@@ -10,6 +10,7 @@ class Fornecedor(models.Model):
     municipio = models.CharField(max_length=100)
     email = models.EmailField()
     telefone = models.CharField(max_length=20)
+    criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.nome_fantasia
@@ -27,6 +28,7 @@ class Produto(models.Model):
     quantidade = models.PositiveBigIntegerField()
     valor_unitario = models.DecimalField(max_digits=10, decimal_places=2)
     Fornecedor = models.ForeignKey(Fornecedor, related_name="produtos", on_delete=models.PROTECT)
+    criado_em = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.nome

@@ -6,8 +6,11 @@ from django.utils import timezone
 class FornecedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fornecedor
-        fields = ["id", "razao_social", "nome_fantasia", "inscricao_estadual", "endereco", "municipio", "email", "telefone"]
-
+        fields = ["id", "razao_social", "nome_fantasia", "inscricao_estadual", "endereco", "municipio", "email", "telefone", "criado_em"]
+        extra_kwargs = {
+            'criado_em': {'read_only': True}
+        }
+        
 # Usado pra simplificar os dodos de fonecedores em produtos
 class FornecedorResumoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,7 +45,10 @@ class ProdutoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Produto
-        fields = ["id", "nome", "codigo", "categoria", "lote", "vencimento", "quantidate", "valor_unitario", "fornecedor"]
+        fields = ["id", "nome", "codigo", "categoria", "lote", "vencimento", "quantidate", "valor_unitario", "fornecedor", "criado_em"]
+        extra_kwargs = {
+            'criado_em': {'read_only': True}
+        }
 
     def get_quantidade_total(self, obj):
         """

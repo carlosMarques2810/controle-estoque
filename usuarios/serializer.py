@@ -13,10 +13,10 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Usuario
-        fields = ["id", "nome_do_usuario", "email", "senha", "confirmar_senha"]
+        fields = ["id", "nome_do_usuario", "email", "senha", "confirmar_senha", "criado_em"]
         extra_kwargs = {
             'senha': {'write_only': True}, 
-            'gerente': {'read_only': True}
+            'criado_em': {'read_only': True}
         }
 
     def validate(self, attrs):

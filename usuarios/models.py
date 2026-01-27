@@ -7,6 +7,7 @@ from django.conf import settings
 class Usuario(AbstractUser):
     username = models.CharField(max_length=255, unique=True, validators=[MinLengthValidator(5)])
     email = models.EmailField(max_length=225, unique=True)
+    criado_em = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
