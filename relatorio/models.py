@@ -7,7 +7,7 @@ Usuario = get_user_model()
 class Relatorio(models.Model):
     class TipoRelatorio(models.TextChoices):
         USUARIOS = "usuarios", "Usuários"
-        PRODUTOS = "produtos", "Protutos"
+        PRODUTOS = "produtos", "Produtos"
         FORNECEDOR = "fornecedor", "Fornecedor"
 
     usuario = models.ForeignKey(Usuario, related_name="relatorios", on_delete=models.CASCADE)

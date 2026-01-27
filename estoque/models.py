@@ -24,7 +24,7 @@ class Produto(models.Model):
     categoria = models.CharField(max_length=50)
     lote = models.CharField(max_length=50)
     vencimento = models.DateField()
-    qauntidade = models.PositiveBigIntegerField()
+    quantidade = models.PositiveBigIntegerField()
     valor_unitario = models.DecimalField(max_digits=10, decimal_places=2)
     Fornecedor = models.ForeignKey(Fornecedor, related_name="produtos", on_delete=models.PROTECT)
 
@@ -33,3 +33,6 @@ class Produto(models.Model):
     
     class Meta:
         db_table = "produtos"
+        # Não pode existir dois registros com essa mesma combinação de campos
+        # Ou seja, essa combinação inteira precisa ser única.
+        unique_together = ("codigo", "lote", "vencimento", "Fornecedor")

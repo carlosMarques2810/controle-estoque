@@ -43,25 +43,29 @@ class ConfiguracaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Configuracao
         fields = [
+            "id",
             "usuario",  
             "pode_adicionar_produto",
             "pode_atualizar_produto", 
             "pode_excluir_produto", 
-            "pode_adicionar_fornecerdor",
-            "pode_atualizar_fornecerdor",
-            "pode_excluir_fornecerdor",
+            "pode_adicionar_fornecedor",
+            "pode_atualizar_fornecedor",
+            "pode_excluir_fornecedor",
             "acesso_relatorios",
             "acesso_configuracao_sistema",
             "permissao_total"
         ]
     
-class RecuperacaoSerializer(serializers.ModelSerializer):
-    usuario = UsuarioSerializer(read_only=True)
-    class Meta:
-        model = Recuperacao
-        fields = ["usuario", "token", "expiracao"]
-
 class LogsAcessoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Login
         filds = ["id", "usuario", "data_login"]
+
+class EncontrarUsuarioSerializer(serializers.Serializer):
+    email = serializers.EmailField(write_only=True)
+
+    def validate_email(self, value):
+        if not Usuario.objects.filter(email=value).exists:
+            raise serializers.ValidationError("usuário não encontrado.")
+        
+        return value

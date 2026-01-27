@@ -28,27 +28,27 @@ class Login(models.Model):
     class Meta:
         db_table = "logins"
 
-# recuperação de acesso.
-class Recuperacao(models.Model):
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="recuperacao", on_delete=models.CASCADE)
-    token = models.CharField(max_length=255)
-    expiracao = models.DateTimeField()
-
-    class Meta:
-        db_table = "recuperacao"
-
 # permissões dos usuarios 
 class Configuracao(models.Model):
     usuario = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="configuracao", on_delete=models.CASCADE,)
     pode_adicionar_produto = models.BooleanField(default=False)
     pode_atualizar_produto = models.BooleanField(default=False)
     pode_excluir_produto = models.BooleanField(default=False)
-    pode_adicionar_fornecerdor = models.BooleanField(default=False)
-    pode_atualizar_fornecerdor = models.BooleanField(default=False)
-    pode_excluir_fornecerdor = models.BooleanField(default=False)
+    pode_adicionar_fornecedor = models.BooleanField(default=False)
+    pode_atualizar_fornecedor = models.BooleanField(default=False)
+    pode_excluir_fornecedor = models.BooleanField(default=False)
     acesso_relatorios = models.BooleanField(default=False)
     acesso_configuracao_sistema = models.BooleanField(default=False)
     permissao_total = models.BooleanField(default=False)
 
     class Meta:
         db_table = "configuracoes"
+
+# recuperação de acesso.
+class Recuperacao(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="recuperacao", on_delete=models.CASCADE)
+    token = models.CharField(max_length=255, unique=True)
+    expiracao = models.DateTimeField()
+
+    class Meta:
+        db_table = "recuperacao"

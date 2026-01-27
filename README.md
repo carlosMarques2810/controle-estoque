@@ -311,6 +311,7 @@ Essa interface é especialmente útil para:
 ### Saída 
 ```json
 {
+  "id": 1,
   "usuario": 1,
   "pode_adicionar_produto": true,
   "pode_atualizar_produto": false,
@@ -338,6 +339,7 @@ Essa interface é especialmente útil para:
 ### Saída
 ```json
 {
+  "id": 1,
   "usuario": 1,
   "pode_adicionar_produto": true,
   "pode_atualizar_produto": false,
@@ -360,8 +362,6 @@ Essa interface é especialmente útil para:
 
 ---
 
-## 🔐 Autenticação JWT
-
 ### ▶ Login
 **POST** `/api/auth/token/`
 
@@ -380,8 +380,8 @@ Essa interface é especialmente útil para:
   "access": "token_access"
 }
 ```
-----
-## ▶ Refresh do token
+---
+### ▶ Refresh do token
 **POST** `/api/auth/refresh/`
 
 #### Entrada
@@ -398,6 +398,363 @@ Essa interface é especialmente útil para:
 }
 
 ```
+## ▶ Recuperação de acesso
+**POST** `/api/auth/recuperar/`
+
+#### Entrada
+```json
+{
+  "email": "usuario@email.com"
+}
+```
+
+### Saída
+```json
+{
+  "detail": "Se o e-mail estiver cadastrado, você receberá as instruções de recuperação."
+}
+
+```
+
+#### Comportamento
+
+ - **O sistema**, ao localizar o usuário com esse e-mail cadastrado, enviará uma mensagem de confimarção com link pra recuperação.
+
+---
+
+## ▶ Recuperação de acesso (confirmaçao)
+**POST** `/api/auth/recuperar/confimar`
+
+### Saída
+```json
+{
+  "detail": "Nova senha enviada para o e-mail."
+}
+
+```
+
+#### Comportamento
+
+ - **O sistema**, ao confirme da ação, enviará um nova senha que pode ser alterada depois.
+ - **obs:** a url de recuperação, **exige**, um paramentro `token` para a validação e possível recuperação de acesso.
+
+---
+
+### ▶ Criar fornecedor
+**POST** `/api/fornecedores/`
+
+### Entrada
+```json
+{
+  "razao_social": "Distribuidora Alfa LTDA",
+  "nome_fantasia": "Alfa Distribuição",
+  "inscricao_estadual": "123456789",
+  "endereco": "Rua das Flores, 123",
+  "municipio": "Manaus",
+  "email": "contato@alfadistribuicao.com",
+  "telefone": "(92) 99999-0000"
+}
+```
+
+### Saída
+```json
+{
+  "id": 1,
+  "razao_social": "Distribuidora Alfa LTDA",
+  "nome_fantasia": "Alfa Distribuição",
+  "inscricao_estadual": "123456789",
+  "endereco": "Rua das Flores, 123",
+  "municipio": "Manaus",
+  "email": "contato@alfadistribuicao.com",
+  "telefone": "(92) 99999-0000"
+}
+```
+
+#### Comportamento
+
+- **Superusuário** → acesso total
+- **Usuário comun** → apenas com a flag (permissão) de `pode_adicionar_fornecedor=True`
+
+---
+
+### ▶ Listar fornecedores
+**GET** `/api/fornecedores/`
+
+### Saída
+```json
+[
+  {
+    "id": 1,
+    "razao_social": "Distribuidora Alfa LTDA",
+    "nome_fantasia": "Alfa Distribuição",
+    "inscricao_estadual": "123456789",
+    "endereco": "Rua das Flores, 123",
+    "municipio": "Manaus",
+    "email": "contato@alfadistribuicao.com",
+    "telefone": "(92) 99999-0000"
+  },
+  {
+    "id": 2,
+    "razao_social": "Distribuidora Gamma S.A.",
+    "nome_fantasia": "Gamma Logística",
+    "inscricao_estadual": "456789123",
+    "endereco": "Rua do Comércio, 789",
+    "municipio": "Rio de Janeiro",
+    "email": "contato@gammalogistica.com",
+    "telefone": "(21) 97777-2222"
+  }
+]
+```
+
+#### Comportamento
+- **Superusuário e usuario comun** → lista todos os fornecedores
+
+📌 Controlado no método `get_queryset`.
+
+---
+
+### ▶ Detalhar fornecedor
+**GET** `/api/fornecedores/{id}/`
+
+### Saída
+```json
+{
+ "id": 1,
+  "razao_social": "Distribuidora Alfa LTDA",
+  "nome_fantasia": "Alfa Distribuição",
+  "inscricao_estadual": "123456789",
+  "endereco": "Rua das Flores, 123",
+  "municipio": "Manaus",
+  "email": "contato@alfadistribuicao.com",
+  "telefone": "(92) 99999-0000" 
+}
+```
+---
+
+### ▶ Detalhar cada produto do fornecedor (distinto)
+**GET** `/api/fornecedores/{id}/produtos/`
+
+### Saída
+```json
+[
+  {
+    "codigo": "P001",
+    "nome": "Arroz Branco 5kg",
+    "categoria": "Alimentos"
+  },
+  {
+    "codigo": "P002",
+    "nome": "Feijão Carioca 1kg",
+    "categoria": "Alimentos"
+  },
+  {
+    "codigo": "P003",
+    "nome": "Detergente Líquido 500ml",
+    "categoria": "Limpeza"
+  }
+]
+
+```
+
+### Observação
+- Cada item representa um **tipo de produto fornecido**, e não unidades de mercadoria em estoque.
+
+---
+
+### ▶ Atualizar fornecedor
+**PUT / PATCH** `/api/fornecedores/{id}/`
+
+### Entrada
+```json
+{
+  "endereco": "Rua das Neves, 200",
+}
+```
+
+### Saída
+```json
+{
+ "id": 1,
+  "razao_social": "Distribuidora Alfa LTDA",
+  "nome_fantasia": "Alfa Distribuição",
+  "inscricao_estadual": "123456789",
+  "endereco": "Rua das Neves, 200",
+  "municipio": "Manaus",
+  "email": "contato@alfadistribuicao.com",
+  "telefone": "(92) 99999-0000" 
+}
+```
+
+#### Comportamento
+
+- **Superusuário** → acesso total
+- **Usuário comun** → apenas com a flag (permissão) de `pode_atualizar_fornecedor=True`
+
+📌 Controlado por permissões personalizadas.
+
+---
+
+### ▶ Remover fornecedor
+**DELETE** `/api/fornecedores/{id}/`
+
+#### Comportamento
+
+- **Superusuário** → acesso total
+- **Usuário comun** → apenas com a flag (permissão) de `pode_excluir_fornecedor=True`
+
+📌 Controlado por permissões personalizadas.
+
+---
+
+### ▶ Criar produto
+**POST** `/api/produtos/`
+
+### Entrada
+```json
+{
+  "nome": "Arroz Tipo 1",
+  "codigo": "ARZ001",
+  "categoria": "Alimentos",
+  "lote": "L2026A",
+  "vencimento": "2026-12-31",
+  "quantidade": 100,
+  "valor_unitario": "7.50",
+  "fornecedor": 1
+}
+```
+
+### Saída
+```json
+{
+  "id": 1,
+  "nome": "Arroz Tipo 1",
+  "codigo": "ARZ001",
+  "categoria": "Alimentos",
+  "lote": "L2026A",
+  "vencimento": "2026-12-31",
+  "quantidade": 100,
+  "valor_unitario": "7.50",
+  "fornecedor": 1
+}
+```
+
+#### Comportamento
+
+- **Superusuário** → acesso total
+- **Usuário comun** → apenas com a flag (permissão) de `pode_adicionar_produto=True`
+
+---
+
+### ▶ Listar produtos
+**GET** `/api/produtos/`
+
+### Saída
+```json
+[
+  {
+    "nome": "Arroz Tipo 1",
+    "codigo": "ARZ001",
+    "categoria": "Alimentos",
+    "lote": "L2026A",
+    "vencimento": "2026-12-31",
+    "quantidade": 100,
+    "valor_unitario": "7.50",
+    "fornecedor": 1
+  },
+  {
+    "nome": "Feijão Carioca",
+    "codigo": "FEJ002",
+    "categoria": "Alimentos",
+    "lote": "L2026B",
+    "vencimento": "2026-10-15",
+    "quantidade": 80,
+    "valor_unitario": "8.90",
+    "fornecedor": 1
+  },
+  {
+    "nome": "Açúcar Refinado",
+    "codigo": "ACU003",
+    "categoria": "Alimentos",
+    "lote": "L2027A",
+    "vencimento": "2027-01-20",
+    "quantidade": 120,
+    "valor_unitario": "4.30",
+    "fornecedor": 2
+  }
+]
+
+```
+
+#### Comportamento
+- **Superusuário e usuario comun** → lista todos os produtos
+
+📌 Controlado no método `get_queryset`.
+
+---
+
+### ▶ Detalhar produto
+**GET** `/api/produtos/{id}/`
+
+### Saída
+```json
+{
+  "id": 1,
+  "nome": "Arroz Tipo 1",
+  "codigo": "ARZ001",
+  "categoria": "Alimentos",
+  "lote": "L2026A",
+  "vencimento": "2026-12-31",
+  "quantidade": 100,
+  "valor_unitario": "7.50",
+  "fornecedor": 1
+}
+```
+---
+
+### ▶ Atualizar produto
+**PUT / PATCH** `/api/produtos/{id}/`
+
+### Entrada
+```json
+{
+  "quantidade": 200,
+}
+```
+
+### Saída
+```json
+{
+  "id": 1,
+  "nome": "Arroz Tipo 1",
+  "codigo": "ARZ001",
+  "categoria": "Alimentos",
+  "lote": "L2026A",
+  "vencimento": "2026-12-31",
+  "quantidade": 200,
+  "valor_unitario": "7.50",
+  "fornecedor": 1
+}
+```
+
+#### Comportamento
+
+- **Superusuário** → acesso total
+- **Usuário comun** → apenas com a flag (permissão) de `pode_atualizar_produto=True`
+
+📌 Controlado por permissões personalizadas.
+
+---
+
+### ▶ Remover produto
+**DELETE** `/api/produtos/{id}/`
+
+#### Comportamento
+
+- **Superusuário** → acesso total
+- **Usuário comun** → apenas com a flag (permissão) de `pode_excluir_produto=True`
+
+📌 Controlado por permissões personalizadas.
+
 ---
 
 ## 🛡️ Observações de segurança

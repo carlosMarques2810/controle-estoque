@@ -2,11 +2,12 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
 from django.contrib.auth import get_user_model
-from .models import Login
+from .models import Login, Recuperacao
+from django.core import mail
 
 Usuario = get_user_model()
 
-class UsuarioTest(APITestCase):
+class Usuario_test(APITestCase):
     def setUp(self):
         self.user1_dados = {
             'nome_do_usuario': "user1.nome",
@@ -79,3 +80,25 @@ class UsuarioTest(APITestCase):
         response = self.client.post("/api/auth/refresh/", {"refresh": refresh}, format="json")
         self.assertIn("access", response.data)
         self.assertIsNotNone(response.data["access"])
+
+    def test_recuperacao_acesso(self):
+        gerente = Usuario.objects.first()
+
+        # verificando o envio de e-mail de recuperação
+        url = reverse("auth-recuperar")
+        self.client.force_authenticate(user=gerente)
+        response = self.client.post(url, data={"email": gerente.email}, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(response.data["detail"], "Se o e-mail estiver cadastrado, você receberá as instruções de recuperação.")
+
+        # verificando a confimação de recuperação de acesso
+        recuperacao = Recuperacao.objects.filter(usuario=gerente).first()
+        url = f"{reverse("auth-recuperar-confirmar")}?token={recuperacao.token}"
+        response = self.client.post(url, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertEqual(response.data["detail"], "Nova senha enviada para o e-mail.")
+        self.assertFalse(Recuperacao.objects.filter(usuario=gerente).exists())
+        # verificar a lsita de e-mail enviados
+        # mail.outbox[1].body
