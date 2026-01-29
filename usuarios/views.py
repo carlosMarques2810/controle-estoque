@@ -29,9 +29,45 @@ class UsuarioViewSet(ModelViewSet):
         if user.configuracao.permissao_total or user.configuracao.acesso_configuracao_sistema:
             return queryset
 
-        return queryset.filter(id=user.id)
+        queryset = queryset.filter(id=user.id)
+
+        # filtros
+        params = {}
+
+        data_inicio = self.request.query_params.get("data_inicio")
+        data_fim = self.request.query_params.get("data_fim")
+        ativo = self.request.query_params.get("is_active")
+
+        # por período
+        if data_inicio is not None:
+            params["date_joined__date__gte"] = data_inicio
+
+        if data_fim is not None:
+            params["date_joined__date__lte"] = data_fim
+
+        # por usuário ativo ou desativado
+        if ativo is not None:
+            params["is_active"] = ativo.lower() in ("true", "1")
+
+        if params:
+            queryset = queryset.filter(**params)
+
+        return queryset
     
-    @action(detail=True, methods={'get'}, url_name="login-logs", url_path="login-logs")
+    @action(detail=True, methods=["patch"], url_name="desativar", url_path="desativar")
+    def desativar(self, request, pk=None):
+        """
+        desativa o usario especifico (is_active=False):
+            - apenas superusuarios `permissao_total=True`
+        """
+
+        usuario = self.get_object()
+        usuario.is_active = False
+        usuario.save(update_fields=['is_active'])
+
+        return Response({"detail": "Usuário desativado com sucesso"}, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=['get'], url_name="login-logs", url_path="login-logs")
     def login_logs(self, request, pk=None):
         """
         Retorna o histórico de login do usuário

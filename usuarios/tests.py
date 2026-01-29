@@ -47,18 +47,18 @@ class Usuario_test(APITestCase):
         self.client.force_authenticate(user=gerente)
 
         # Verificado se o superuser pode alterar as permissiões dos seus geridos
-        url = f"/api/usuarios/{user1.id}/permissoes/"
+        url = reverse("usuario-permissoes", kwargs={"pk": user1.id})
         response = self.client.patch(url, {'pode_adicionar_produto': True}, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # verificando se o superuser pode mudar as suas proprias permissões
-        url = f"/api/usuarios/{gerente.id}/permissoes/"
+        url = reverse("usuario-permissoes", kwargs={"pk": gerente.id})
         response = self.client.patch(url, {'pode_adicionar_produto': False}, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # verificando se o usuario pode alterar as suas proprias permissões
         self.client.force_authenticate(user=user1)
-        url = f"/api/usuarios/{user1.id}/permissoes/"
+        url = reverse("usuario-permissoes", kwargs={"pk": user1.id})
         response = self.client.patch(url, {'pode_adicionar_produto': True}, format="json")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(response.data["detail"], "Você não tem permissão para executar essa ação.")
@@ -66,7 +66,8 @@ class Usuario_test(APITestCase):
     def test_login_e_logins_de_acesso_e_refresh_token(self):
         from decouple import config
         # verifica o login
-        response = self.client.post("/api/auth/login", {"email": config("SUPERUSER_EMAIL"), "password": config("SUPERUSER_PASSWORD")}, format="json")
+        url = reverse("obter-token")
+        response = self.client.post(url, {"email": config("SUPERUSER_EMAIL"), "password": config("SUPERUSER_PASSWORD")}, format="json")
         self.assertIn("access", response.data)
         self.assertIn("refresh", response.data)
         self.assertIsNotNone(response.data["access"])
@@ -76,8 +77,9 @@ class Usuario_test(APITestCase):
         self.assertEqual(Login.objects.filter(usuario=Usuario.objects.first()).exists(), True)
 
         #renovação do token 
+        url = reverse("atualizar-token")
         refresh = response.data['refresh']
-        response = self.client.post("/api/auth/refresh/", {"refresh": refresh}, format="json")
+        response = self.client.post(url, {"refresh": refresh}, format="json")
         self.assertIn("access", response.data)
         self.assertIsNotNone(response.data["access"])
 

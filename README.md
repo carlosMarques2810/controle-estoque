@@ -178,13 +178,14 @@ Essa interface é especialmente útil para:
   "id": 1,
   "nome_do_usuario": "Carlos Silva",
   "email": "carlos@email.com",
+  "ativo": true,
   "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
 #### Comportamento
 
-- **Superusuário** → cria um usuário
+- **Superusuário `flag (permissao_total=True)`** → cria um usuário
 - **Usuário comun** → acesso negado
 
 ---
@@ -199,19 +200,35 @@ Essa interface é especialmente útil para:
     "id": 1,
     "nome_do_usuario": "Carlos Silva",
     "email": "carlos@email.com",
+    "ativo": true,
     "criado_em": "2026-0115T14:32:10Z"
   },
   {
     "id": 2,
     "nome_do_usuario": "Maria Souza",
     "email": "maria@email.com",
+    "ativo": true,
     "criado_em": "2026-0115T14:32:10Z"
   }
 ]
 ```
 
+### 🔎 Filtros opcionais
+
+A rota permite **filtrar usuários por período de criação**, utilizando parâmetros na query string.
+
+#### Parâmetros disponíveis
+- `data_inicio` → data inicial (`YYYY-MM-DD`)
+- `data_fim` → data final (`YYYY-MM-DD`)
+- `ativo` → bool (`true ou false`) ou int (`0 ou 1`)
+
+#### Exemplo de uso
+```http
+GET /api/usuarios/?data_inicio=2026-01-01&data_fim=2026-01-31&ativo=1
+```
+
 #### Comportamento
-- **Superusuário** → lista todos os usuários
+- **Superusuário `flag (permissao_total=True)`** → lista todos os usuários
 - **Usuário comum** → retorna apenas ele mesmo
 
 📌 Controlado no método `get_queryset`.
@@ -227,13 +244,14 @@ Essa interface é especialmente útil para:
   "id": 1,
   "nome_do_usuario": "Carlos Silva",
   "email": "carlos@email.com",
+  "ativo": true,
   "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
 #### Comportamento
 
-- **Superusuário** → pode acessar usuários
+- **Superusuário `flag (permissao_total=True)`** → pode acessar usuários
 - **Usuário comum** → pode acessar apenas seus próprios dados
 
 📌 Controlado por permissões personalizadas (`has_object_permission`).
@@ -257,17 +275,34 @@ Essa interface é especialmente útil para:
   "id": 1,
   "nome_do_usuario": "Carlos Silva",
   "email": "carlos@email.com",
+  "ativo": true,
   "criado_em": "2026-0115T14:32:10Z"
 }
 ```
 
 #### Comportamento
 
-- **Superusuário** → pode atualizar usuários
+- **Superusuário `flag (permissao_total=True)`** → pode atualizar usuários
 - **Usuário comum** → atuliza os próprios dados
 
 📌 Controlado por permissões personalizadas.
 
+---
+
+### ▶ Desativar usuário
+**PUT / PATCH** `/api/usuarios/{id}/desativar/`
+
+### Saída
+```json
+{
+  "detail": "Usuário desativado com sucesso"
+}
+```
+
+- **Superusuário `flag (permissao_total=True)`** → pode desativar usuários
+- **Usuário comum** → acesso negado
+
+📌 Controlado por permissões personalizadas.
 ---
 
 ### ▶ Remover usuário
@@ -275,7 +310,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superusuário** → pode remover usuários
+- **Superusuário `flag (permissao_total=True)`** → pode remover usuários
 - **Usuário comum** → acesso negado
 
 📌 Controlado por permissões personalizadas.
@@ -303,7 +338,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superusuário**
+- **Superusuário `flag (permissao_total=True)`**
 - Retorna o histórico de acessos do usuário
 
 📌 Rota criada com `@action(detail=True)`.
@@ -360,7 +395,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superusuário** → pode visualizar e alterar as configurações de qualquer usuário
+- **Superusuário `flag (permissao_total=True)`** → pode visualizar e alterar as configurações de qualquer usuário
 - **Usuário comum** → só pode visualizar as suas configurações
 
 📌 A configuração é criada automaticamente via `signal (post_save)`.
@@ -479,7 +514,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superusuário** → acesso total
+- **Superusuário `flag (permissao_total=True)`** → acesso total
 - **Usuário comun** → apenas com a flag (permissão) de `pode_adicionar_fornecedor=True`
 
 ---
@@ -516,7 +551,7 @@ Essa interface é especialmente útil para:
 ```
 
 #### Comportamento
-- **Superusuário e usuario comun** → lista todos os fornecedores
+- **Superusuário `flag (permissao_total=True)` e usuario comun** → lista todos os fornecedores
 
 📌 Controlado no método `get_queryset`.
 
@@ -598,7 +633,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superusuário** → acesso total
+- **Superusuário `flag (permissao_total=True)`** → acesso total
 - **Usuário comun** → apenas com a flag (permissão) de `pode_atualizar_fornecedor=True`
 
 📌 Controlado por permissões personalizadas.
@@ -610,7 +645,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superusuário** → acesso total
+- **Superusuário `flag (permissao_total=True)`** → acesso total
 - **Usuário comun** → apenas com a flag (permissão) de `pode_excluir_fornecedor=True`
 
 📌 Controlado por permissões personalizadas.
@@ -653,7 +688,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superusuário** → acesso total
+- **Superusuário `flag (permissao_total=True)`** → acesso total
 - **Usuário comun** → apenas com a flag (permissão) de `pode_adicionar_produto=True`
 
 ---
@@ -702,7 +737,7 @@ Essa interface é especialmente útil para:
 ```
 
 #### Comportamento
-- **Superusuário e usuario comun** → lista todos os produtos
+- **Superusuário `flag (permissao_total=True)` e usuario comun** → lista todos os produtos
 
 📌 Controlado no método `get_queryset`.
 
@@ -756,7 +791,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superusuário** → acesso total
+- **Superusuário `flag (permissao_total=True)`** → acesso total
 - **Usuário comun** → apenas com a flag (permissão) de `pode_atualizar_produto=True`
 
 📌 Controlado por permissões personalizadas.
@@ -768,7 +803,7 @@ Essa interface é especialmente útil para:
 
 #### Comportamento
 
-- **Superusuário** → acesso total
+- **Superusuário `flag (permissao_total=True)`** → acesso total
 - **Usuário comun** → apenas com a flag (permissão) de `pode_excluir_produto=True`
 
 📌 Controlado por permissões personalizadas.

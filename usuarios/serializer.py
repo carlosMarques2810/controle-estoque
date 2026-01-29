@@ -1,21 +1,21 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import Login, Configuracao, Recuperacao
+from .models import Login, Configuracao
 
 Usuario = get_user_model()
 
 # Controla os dados referentes ao usuário
 class UsuarioSerializer(serializers.ModelSerializer):
     nome_do_usuario = serializers.CharField(source='username', label="Nome do usuário")
-    senha = serializers.CharField(source="password", label="Senha", style={"input_type": "password"})
+    senha = serializers.CharField(source="password", label="Senha", write_only=True, style={"input_type": "password"})
     confirmar_senha = serializers.CharField(write_only=True, label="Comfirmar senha", style={"input_type": "password"})
+    ativo = serializers.BooleanField(source="is_active", label="ativo", read_only=True)
 
     class Meta:
         model = Usuario
-        fields = ["id", "nome_do_usuario", "email", "senha", "confirmar_senha", "criado_em"]
+        fields = ["id", "nome_do_usuario", "email", "senha", "confirmar_senha", "ativo", "criado_em"]
         extra_kwargs = {
-            'senha': {'write_only': True}, 
             'criado_em': {'read_only': True}
         }
 

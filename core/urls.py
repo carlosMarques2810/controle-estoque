@@ -14,8 +14,8 @@ router.register(r"auth", u_views.RecuperacaoViewSet, basename="auth")
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('api/auth/login', u_views.LoginView.as_view(), name="obter_token"),
-    path('api/auth/refresh/', TokenRefreshView.as_view(), name="atualizar_token")
+    path('api/auth/login', u_views.LoginView.as_view(), name="obter-token"),
+    path('api/auth/refresh/', TokenRefreshView.as_view(), name="atualizar-token")
 ]
 
 
